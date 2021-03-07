@@ -1,0 +1,144 @@
+.express-lands {
+  /* position: absolute; */
+  /* width: 97px; */
+  height: 20px;
+  left: 1076px;
+  top: 259px;
+
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  /* identical to box height, or 122% */
+
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+
+  color: #5a99c4;
+}
+
+.s {
+  width: 32px;
+  height: 32px;
+  /* line-height: 500px; */
+  border-radius: 50%;
+  font-size: 16px;
+  padding: 5px;
+  color: #fff;
+  left: 1036px;
+  text-align: center;
+  background: #5a99c4;
+  line-height: 19px;
+  font-family: "Source Sans Pro";
+}
+
+.login-text {
+  width: 200px;
+  height: 82px;
+  left: 1036px;
+  top: 337px;
+
+  /* Heading/h1/34px */
+
+  font-family: "France";
+  font-style: normal;
+  font-weight: bold;
+
+  font-size: 34px;
+  line-height: 41px;
+  /* or 121% */
+
+  color: #000000;
+}
+
+.welcome {
+  width: 271px;
+  height: 20px;
+  left: 1036px;
+  top: 435px;
+
+  /* Body/main */
+
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+input[type="text"] {
+  height: 40px;
+  left: 1036px;
+  top: 485px;
+
+  font-family: "Source Sans Pro";
+  background: #ffffff;
+  box-shadow: 0px 7px 64px rgba(0, 0, 0, 0.07);
+  border-radius: 6px;
+}
+
+input:focus {
+  border: 2px solid #5a99c4;
+}
+
+::placeholder {
+  font-size: 15px;
+  line-height: 20px;
+  color: #1a051d;
+  color: #d0c9d6;
+  font-family: "Source Sans Pro";
+}
+
+input[type="password"] {
+  height: 40px;
+  left: 1036px;
+  top: 485px;
+
+  background: #ffffff;
+  box-shadow: 0px 7px 64px rgba(0, 0, 0, 0.07);
+  border-radius: 6px;
+}
+
+.btn-login {
+  background: #13244e;
+  border-radius: 6px;
+  color: #fff;
+
+  font-family: "Source Sans Pro";
+}
+
+.forgot-password {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+
+  color: #0093dd;
+}
+
+.bg-gradient-blue {
+  background: #eeeeee;
+  height: 100vh;
+  overflow: scroll;
+}
+
+.aside-1 {
+  height: 800px;
+}
+
+.aside-2 {
+  height: 800px;
+  width: 487px;
+  top: 100px;
+}
+
+/* Landscape */
+
+@media (max-width: 360px) {
+  .aside-2 {
+    top: 0;
+  }
+}
