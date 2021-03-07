@@ -2,7 +2,9 @@
   font-size: 0.75rem;
   text-transform: uppercase;
 }
-
+html {
+  width: 1200px;
+}
 .sidebar .nav-link {
   font-weight: 500;
   color: #333;
@@ -12,6 +14,19 @@
   background: #eff5fb;
   box-shadow: inset -10px 0px 20px rgba(194, 203, 217, 0.15);
   border-radius: 0px;
+  width: 1152px;
+  background-size: cover;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .bg-express {
+    overflow-x: hidden;
+  }
+
+  .imac {
+    display: none;
+  }
 }
 
 .express-lands {
