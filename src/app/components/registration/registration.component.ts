@@ -1,25 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { AuthenticationService } from '../../services/auth.service';
+
+import { UserService } from '../../services/user.service';
 import { AlertService } from '../../services/alert.service';
+import { AuthenticationService } from '../../services/auth.service';
+
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.css'],
 })
-export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
+export class RegistrationComponent implements OnInit {
+  registerForm: FormGroup;
   loading = false;
   submitted = false;
-  returnUrl: string;
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
+    private userService: UserService,
     private alertService: AlertService
   ) {
     // redirect to home if already logged in
@@ -29,38 +31,38 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
+    this.registerForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       username: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   // convenience getter for easy access to form fields
   get f() {
-    return this.loginForm.controls;
+    return this.registerForm.controls;
   }
 
   onSubmit() {
     this.submitted = true;
 
     // reset alerts on submit
-    this.alertService.clear();
+    // this.alertService.clear();
 
     // stop here if form is invalid
-    if (this.loginForm.invalid) {
+    if (this.registerForm.invalid) {
       return;
     }
 
     this.loading = true;
-    this.authenticationService
-      .login(this.f.username.value, this.f.password.value)
+    this.userService
+      .register(this.registerForm.value)
       .pipe(first())
       .subscribe(
         (data) => {
-          this.router.navigate([this.returnUrl]);
+          this.alertService.success('Registration successful', true);
+          this.router.navigate(['/login']);
         },
         (error) => {
           this.alertService.error(error);
