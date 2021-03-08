@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "sbsc-mock-backend": {
+      "hosting": {
+        "sbsc-frontend": [
+          "sbsc-mock-backend"
+        ]
+      }
+    }
+  }
+}

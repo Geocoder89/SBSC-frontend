@@ -1,45 +1,50 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { User } from '../models/User';
+import { Observable } from 'rxjs';
 
-import { environment } from '@environments/environment';
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  constructor(private angularfireauth: AngularFireAuth) {}
 
-@Injectable({ providedIn: 'root' })
-export class AuthenticationService {
-  private currentUserSubject: BehaviorSubject<any>;
-  public currentUser: Observable<any>;
-
-  constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<any>(
-      JSON.parse(localStorage.getItem('currentUser'))
-    );
-    this.currentUser = this.currentUserSubject.asObservable();
+  // tslint:disable-next-line: typedef
+  login(email: string, password: string) {
+    return new Promise((resolve, reject) => {
+      this.angularfireauth.auth
+        .signInWithEmailAndPassword(email, password)
+        .then(
+          (userData) => {
+            resolve(userData);
+          },
+          (err) => reject(err)
+        );
+    });
   }
 
-  public get currentUserValue() {
-    return this.currentUserSubject.value;
+  // service to check if we are logged in
+
+  getAuth() {
+    return this.angularfireauth.authState.map((auth) => auth);
   }
 
-  login(username, password) {
-    return this.http
-      .post<any>(`${environment.apiUrl}/users/authenticate`, {
-        username,
-        password,
-      })
-      .pipe(
-        map((user) => {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          return user;
-        })
-      );
-  }
-
+  // logout service
   logout() {
-    // remove user from local storage and set current user to null
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    this.angularfireauth.auth.signOut();
+  }
+
+  // register service
+  register(email: string, password: string) {
+    return new Promise((resolve, reject) => {
+      this.angularfireauth.auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(
+          (userData) => {
+            resolve(userData);
+          },
+          (err) => reject(err)
+        );
+    });
   }
 }

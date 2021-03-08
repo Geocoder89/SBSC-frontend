@@ -1,71 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-import { AuthenticationService } from '../../services/auth.service';
-import { AlertService } from '../../services/alert.service';
+import { User } from 'src/app/models/User';
+import { AuthService } from '../../services/auth.service';
+
+import { Router } from '@angular/router';
+
+import { FlashMessagesService } from 'angular2-flash-messages';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
   loading = false;
-  submitted = false;
-  returnUrl: string;
-
+  user: User = {
+    email: '',
+    password: '',
+  };
   constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private authenticationService: AuthenticationService,
-    private alertService: AlertService
-  ) {
-    // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
-  }
+    private authservice: AuthService,
+    private flashMessages: FlashMessagesService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+  ngOnInit(): void {
+    this.authservice.getAuth().subscribe((auth) => {
+      if (auth) {
+        this.router.navigate(['/dashboard']);
+      }
     });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.loginForm.controls;
   }
 
   onSubmit() {
-    this.submitted = true;
+    // login method by calling auth service
+    this.authservice
+      .login(this.user.email, this.user.password)
+      .then((response) => {
+        this.loading = true;
+        // flash message
+        this.flashMessages.show('You are now logged in', {
+          cssClass: 'alert-success',
+          timeout: 4000,
+        });
+        // redirect to dashboard
 
-    // reset alerts on submit
-    this.alertService.clear();
-
-    // stop here if form is invalid
-    if (this.loginForm.invalid) {
-      return;
-    }
-
-    this.loading = true;
-    this.authenticationService
-      .login(this.f.username.value, this.f.password.value)
-      .pipe(first())
-      .subscribe(
-        (data) => {
-          this.router.navigate([this.returnUrl]);
-        },
-        (error) => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      );
+        this.router.navigate(['/dashboard']);
+      })
+      .catch((err) => {
+        this.flashMessages.show(err.message, {
+          cssClass: 'alert-danger',
+          timeout: 4000,
+        });
+      });
   }
 }

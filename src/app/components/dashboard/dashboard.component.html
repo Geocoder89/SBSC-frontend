@@ -79,10 +79,11 @@
         <div class="col-lg-4 col-12 ml-3">
           <div class="notifications-card">
             <img src="../../../assets/images/user.png" class="empty scale vector" width="62" height="74" id="n53_588">
-            <p>Chidimma Nwanya</p>
+            <p>{{loggedInUser}}</p>
             <div class="second">Vanity by Juls</div>
             <div class="">
-              <button class="logout"><img class="button-img" src="../../../assets/images/power.png" alt="power button">
+              <button class="logout" (click)="onLogOut()"><img class="button-img" src="../../../assets/images/power.png"
+                  alt="power button">
                 <div class="logout-text">Logout</div>
               </button>
             </div>
@@ -101,7 +102,7 @@
           <img src="../../../assets/images/spanner.png" class="settings mr-2" alt="">
           <span class="customize mr-2">Customize Dashboard</span>
           <span class="center-border mr-2"></span>
-          <span class="date">Mon, Jun 22, 2020</span>
+          <span class="date">{{year |date:'fullDate'}}</span>
 
 
         </div>
@@ -121,7 +122,7 @@
             </div>
             <div class="row">
               <div class="col-6">
-                <p class="card-user ml-3">Welcome back! Chidimma.</p>
+                <p class="card-user ml-3 mb-3">Welcome back! Chidimma.</p>
               </div>
 
             </div>

@@ -1,73 +1,46 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/User';
+import { AuthService } from '../../services/auth.service';
+
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
 
-import { UserService } from '../../services/user.service';
-import { AlertService } from '../../services/alert.service';
-import { AuthenticationService } from '../../services/auth.service';
-
+import { FlashMessagesService } from 'angular2-flash-messages';
+import { ThrowStmt } from '@angular/compiler';
 @Component({
-  selector: 'app-registration',
+  selector: 'app-register',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent implements OnInit {
-  registerForm: FormGroup;
   loading = false;
-  submitted = false;
-
+  user: User = {
+    email: '',
+    password: '',
+  };
   constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private authenticationService: AuthenticationService,
-    private userService: UserService,
-    private alertService: AlertService
-  ) {
-    // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
-  }
+    private authservice: AuthService,
+    private flashMessages: FlashMessagesService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
-  }
+  ngOnInit(): void {}
 
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.registerForm.controls;
-  }
-
+  // tslint:disable-next-line: typedef
   onSubmit() {
-    this.submitted = true;
-
-    // reset alerts on submit
-    // this.alertService.clear();
-
-    // stop here if form is invalid
-    if (this.registerForm.invalid) {
-      return;
-    }
-
-    this.loading = true;
-    this.userService
-      .register(this.registerForm.value)
-      .pipe(first())
-      .subscribe(
-        (data) => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['/login']);
-        },
-        (error) => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      );
+    this.authservice
+      .register(this.user.email, this.user.password)
+      .then((res) => {
+        this.flashMessages.show('you are now registered', {
+          cssClass: 'alert-success',
+          timeout: 4000,
+        });
+        this.router.navigate(['/login']);
+      })
+      .catch((err) => {
+        this.flashMessages.show(err.message, {
+          cssClass: 'alert-danger',
+          timeout: 4000,
+        });
+      });
   }
 }
