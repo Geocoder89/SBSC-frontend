@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
 
     this.flashmessages.show('logged out successfully', {
       cssClass: 'alert-success',
-      timeout: 4000,
+      timeout: 1000,
     });
 
     // navigate to login route

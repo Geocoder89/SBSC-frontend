@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
         // flash message
         this.flashMessages.show('You are now logged in', {
           cssClass: 'alert-success',
-          timeout: 4000,
+          timeout: 1000,
         });
         // redirect to dashboard
 
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
       .catch((err) => {
         this.flashMessages.show(err.message, {
           cssClass: 'alert-danger',
-          timeout: 4000,
+          timeout: 1000,
         });
       });
   }

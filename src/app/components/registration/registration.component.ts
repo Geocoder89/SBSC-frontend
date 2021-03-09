@@ -27,19 +27,20 @@ export class RegistrationComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   onSubmit() {
+    this.loading = true;
     this.authservice
       .register(this.user.email, this.user.password)
       .then((res) => {
         this.flashMessages.show('you are now registered', {
           cssClass: 'alert-success',
-          timeout: 4000,
+          timeout: 2000,
         });
         this.router.navigate(['/login']);
       })
       .catch((err) => {
         this.flashMessages.show(err.message, {
           cssClass: 'alert-danger',
-          timeout: 4000,
+          timeout: 2000,
         });
       });
   }
