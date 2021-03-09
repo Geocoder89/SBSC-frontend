@@ -1,10 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+}
 .showcase {
   position: relative;
-  background: url("../../../assets/images/showcase.jpeg") no-repeat center
-    center/cover;
+  background: url("../../../assets//images/showcase.jpeg");
   min-height: 100vh;
   color: #fff;
-  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 }
 
 body {

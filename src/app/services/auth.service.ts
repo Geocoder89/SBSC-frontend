@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { User } from '../models/User';
-import { Observable } from 'rxjs';
-
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +24,7 @@ export class AuthService {
   // service to check if we are logged in
 
   getAuth() {
-    return this.angularfireauth.authState.map((auth) => auth);
+    return this.angularfireauth.authState.pipe(map((auth) => auth));
   }
 
   // logout service
